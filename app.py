@@ -12,6 +12,47 @@ herzhaft_options = ["All", "herzhaft", "süß"]
 takeaway_options = ["All", "bestellen", "kochen"]
 effort_options = ["All", "wenig", "mittel", "hoch"]
 
+# Define CSS styles
+STYLE = """
+<style>
+body {
+    background-image: url('https://images.unsplash.com/photo-1523520098692-64d7b0e29b8f?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MTZ8fHdhbGxwYXBlcnxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80');
+    background-size: cover;
+}
+.container {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+h1 {
+    color: #ff4500;
+    text-align: center;
+    animation: blink 1s linear infinite;
+}
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
+}
+</style>
+"""
+
+# Define JS scripts
+JS = """
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var logo = document.querySelector('#logo');
+    logo.addEventListener('mouseenter', function() {
+        this.style.transform = 'rotate(360deg)';
+    });
+    logo.addEventListener('mouseleave', function() {
+        this.style.transform = 'rotate(0deg)';
+    });
+});
+</script>
+"""
+
 # Get user inputs for filters
 st.write("# Carlas Food Inspiration!")
 st.write("Hier muss man erst filtern:")
