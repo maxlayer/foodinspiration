@@ -34,12 +34,16 @@ if st.button("WAS LECKRES"):
     if len(df) > 0:
         current_food = random.choice(list(df["food"]))
         st.write(f"Was Leckres: {current_food}!")
+        st.write("---")
+        st.button("Bäh! Ich will was leckres", key="new_suggestion")
     else:
         st.write("Leider gibt es nichts Leckeres.")
 
-# Try again button
-if st.button("Bäh! Ich will was leckres"):
-    st.experimental_rerun()
+# Generate new suggestion
+if "new_suggestion" in st.session_state:
+    current_food = random.choice(list(df["food"]))
+    st.write(f"Was Leckres: {current_food}!")
+    st.write("---")
+    st.button("Bäh! Ich will was leckres", key="new_suggestion")
 
-st.write("---")
 st.write("Food data source: [www.example.com/food](http://www.example.com/food)")
