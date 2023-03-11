@@ -7,9 +7,9 @@ import time
 df = pd.read_excel("food_table.xlsx")
 
 # Define filters
-herzhaft_options = ["All", "herzhaft", "süß"]
-takeaway_options = ["All", "bestellen", "kochen"]
-effort_options = ["All", "wenig", "mittel", "hoch"]
+herzhaft_options = ["herzhaft", "süß"]
+takeaway_options = ["bestellen", "kochen"]
+effort_options = ["wenig", "mittel", "hoch"]
 
 # Define CSS styles
 STYLE = """
@@ -61,56 +61,42 @@ st.write("Hier muss man erst filtern:")
 st.markdown(JS, unsafe_allow_html=True)
 
 
-herzhaft = st.selectbox("herzhaft oder süß?", herzhaft_options)
-if herzhaft != "All":
-    df = df[df["salty"] == herzhaft]
+herzhaft = st.multiselect("herzhaft oder süß?", herzhaft_options, default=["herzhaft", "süß"])
+if len(herzhaft) > 0:
+    df = df[df["salty"].isin(herzhaft)]
 
-takeaway = st.selectbox("Kochen oder Bestellen?", takeaway_options)
-if takeaway != "All":
-    df = df[df["takeaway"] == takeaway]
+takeaway = st.multiselect("Kochen oder Bestellen?", takeaway_options, default=["bestellen", "kochen"])
+if len(takeaway) > 0:
+    df = df[df["takeaway"].isin(takeaway)]
     
-    if takeaway == "kochen":
-        effort = st.selectbox("Wie viel Aufwand?", effort_options)
-        if effort != "All":
-            df = df[df["effort"] == effort]
-
+    if "kochen" in takeaway:
+        effort = st.multiselect("Wie viel Aufwand?", effort_options, default=["wenig", "mittel", "hoch"])
+        if len(effort) > 0:
+            df = df[df["effort"].isin(effort)]
 
 # Suggest food
 if st.button("WAS LECKRES"):
-    with st.spinner("Hmm..."):
-        time.sleep(3)
-        if len(df) > 0:
-            current_food = random.choice(list(df["food"]))
-            st.write(f"# {current_food}")
-            st.write("---")
-            st.button("Bäh! Ich will was leckres", key="new_suggestion")
-        else:
-            st.write("Leider gibt es nichts Leckeres.")
-
-# Generate new suggestion
-if "new_suggestion" in st.session_state:
-    with st.spinner("Ja Ok, noch ein Versuch..."):
-        time.sleep(5)
+    with st.spinner(text="Ich überlege..."):
+        time.sleep(2)
+    if len(df) > 0:
         current_food = random.choice(list(df["food"]))
         st.write(f"# {current_food}")
         st.write("---")
         st.button("Bäh! Ich will was leckres", key="new_suggestion")
-
-# Suggest food
-#if st.button("WAS LECKRES"):
-#    if len(df) > 0:
-#        current_food = random.choice(list(df["food"]))
-#        #st.write(f"# {current_food}")
-#        st.write(f"<h1>{current_food}</h1>", unsafe_allow_html=True)
-#        st.write("---")
-#        st.button("Bäh! Ich will was leckres", key="new_suggestion")
-#    else:
-#        st.write("Leider gibt es nichts Leckeres.")
+    else:
+        st.write("Leider gibt es nichts Leckeres.")
 
 # Generate new suggestion
-#if "new_suggestion" in st.session_state:
-#    current_food = random.choice(list(df["food"]))
-#    st.write(f"# {current_food}")
-#    st.write("---")
-#    st.button("Bäh! Ich will was leckres", key="new_suggestion")
+if "new_suggestion" in st.session_state:
+    current_food = random.choice(list(df["food"]))
+    st.write(f"# {current_food}")
+    st.write("---")
+    st.button("Bäh! Ich will was leckres", key="new_suggestion")
 
+Note that the multiselect function returns a list of selected options, so you need to check if the length of the list is greater than zero before applying the filter. Also, since the user can select multiple options, the isin method is used to filter the dataframe.
+maxludwig.layer@gmail.com
+Also make them appear after another so it will be an iterative process and the Suggest is at the end 
+2 / 2
+!
+Only one message at a time. Please allow any other responses to complete before sending another message, or wait one minute.
+There was an error generating a response
