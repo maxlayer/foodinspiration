@@ -1,5 +1,8 @@
 import streamlit as st
 import pandas as pd
+import pkg_resources
+pkg_resources.get_distribution("PyGithub").version
+
 from github import Github
 
 def customize_table():
