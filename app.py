@@ -92,11 +92,3 @@ if "new_suggestion" in st.session_state:
     st.write(f"# {current_food}")
     st.write("---")
     st.button("Bäh! Ich will was leckres", key="new_suggestion")
-
-Note that the multiselect function returns a list of selected options, so you need to check if the length of the list is greater than zero before applying the filter. Also, since the user can select multiple options, the isin method is used to filter the dataframe.
-maxludwig.layer@gmail.com
-Also make them appear after another so it will be an iterative process and the Suggest is at the end 
-2 / 2
-!
-Only one message at a time. Please allow any other responses to complete before sending another message, or wait one minute.
-There was an error generating a response
