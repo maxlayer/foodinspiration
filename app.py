@@ -2,6 +2,9 @@ import streamlit as st
 import pandas as pd
 import random
 import time
+from streamlit_themes import set_theme
+
+set_theme('purple')
 
 # Load data from Excel file
 df = pd.read_excel("food_table.xlsx")
