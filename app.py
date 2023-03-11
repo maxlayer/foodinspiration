@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import random
-from streamlit_aggrid import GridOptionsBuilder, AgGrid, DataReturnMode, JsCode
+from st_aggrid import GridOptionsBuilder, AgGrid, DataReturnMode, JsCode
 
 st.set_page_config(page_title="Food Inspiration für Carla", page_icon=":fork_and_knife:", layout="wide")
 
