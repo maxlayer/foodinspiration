@@ -2,8 +2,6 @@ import streamlit as st
 import pandas as pd
 import random
 
-st.set_page_config(page_title="Carlas Food Inspiration", page_icon=":fork_and_knife:", layout="wide")
-
 # Load data from Excel file
 df = pd.read_excel("food_table.xlsx")
 
@@ -52,6 +50,11 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 """
+st.set_page_config(page_title="Carlas Food Inspiration", page_icon=":fork_and_knife:", layout="wide")
+st.markdown("<div id='logo'><img src='https://www.freeiconspng.com/uploads/restaurant-icon-png-21.png' width='50'></div>", unsafe_allow_html=True)
+st.write("Hier muss man erst filtern:")
+st.markdown(JS, unsafe_allow_html=True)
+
 
 # Get user inputs for filters
 st.write("# Carlas Food Inspiration!")
