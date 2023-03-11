@@ -1,27 +1,46 @@
-import pandas as pd
 import streamlit as st
+import pandas as pd
 import random
 
+st.set_page_config(page_title="Food Inspiration", page_icon=":fork_and_knife:", layout="wide")
+
 # Load data from Excel file
-food_table = pd.read_excel("food_table.xlsx")
+df = pd.read_excel("food.xlsx")
 
-# Sidebar filters
-st.sidebar.header("Filters")
-salty_sweet = st.sidebar.radio("Salty or sweet?", ("All", "Salty", "Sweet"))
-effort = st.sidebar.slider("Effort", 1, 9, (1, 9))
-takeaway_cookathome = st.sidebar.radio("Takeaway or cook at home?", ("All", "Takeaway", "Cook at home"))
+# Define filters
+herzhaft_options = ["All", "Salty", "Sweet"]
+dauer_options = ["All", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+liefern_options = ["All", "Takeaway", "Cook at home"]
 
-# Filter the food table
-filtered_food_table = food_table.copy()
-if salty_sweet != "All":
-    filtered_food_table = filtered_food_table[filtered_food_table["herzhaft"] == salty_sweet.lower()]
-filtered_food_table = filtered_food_table[(filtered_food_table["dauer"] >= effort[0]) & (filtered_food_table["dauer"] <= effort[1])]
-if takeaway_cookathome != "All":
-    filtered_food_table = filtered_food_table[filtered_food_table["liefern"] == takeaway_cookathome.lower()]
+# Get user inputs for filters
+st.write("# Welcome to Food Inspiration!")
+st.write("Use the following filters to find your perfect food:")
 
-# Shuffle the filtered food table and display a random food
-shuffled_food = random.sample(list(filtered_food_table["essen"]), len(filtered_food_table))
-current_food_idx = st.empty()
-if st.button("Reshuffle"):
-    shuffled_food = random.sample(list(filtered_food_table["essen"]), len(filtered_food_table))
-current_food_idx.markdown(shuffled_food[0], True)
+herzhaft = st.selectbox("Salty or sweet?", herzhaft_options)
+if herzhaft == "Salty":
+    df = df[df["herzhaft"] == "Salty"]
+elif herzhaft == "Sweet":
+    df = df[df["herzhaft"] == "Sweet"]
+
+dauer = st.selectbox("How much effort?", dauer_options)
+if dauer != "All":
+    df = df[df["dauer"] == int(dauer)]
+
+liefern = st.selectbox("Takeaway or cook at home?", liefern_options)
+if liefern != "All":
+    df = df[df["liefern"] == liefern]
+
+# Suggest food
+if st.button("Suggest food"):
+    if len(df) > 0:
+        current_food = random.choice(list(df["essen"]))
+        st.write(f"Try {current_food}!")
+    else:
+        st.write("No food found with these filters.")
+
+# Try again button
+if st.button("Try again"):
+    st.experimental_rerun()
+
+st.write("---")
+st.write("Food data source: [www.example.com/food](www.example.com/food)")    
