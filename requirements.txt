@@ -3,4 +3,4 @@ numpy
 streamlit
 openpyxl
 streamlit_aggrid 
-PyGithub
+streamlit_themes 
