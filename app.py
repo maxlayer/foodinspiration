@@ -8,7 +8,7 @@ st.set_page_config(page_title="Food Inspiration für Carla", page_icon=":fork_an
 df = pd.read_excel("food_table.xlsx")
 
 # Define filters
-herzhaft_options = ["All", "Salty", "sweet"]
+herzhaft_options = ["All", "salty", "sweet"]
 effort_options = ["All", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 takeaway_options = ["All", "takeaway", "cook"]
 
@@ -16,20 +16,20 @@ takeaway_options = ["All", "takeaway", "cook"]
 st.write("# Welcome to Food Inspiration!")
 st.write("Use the following filters to find your perfect food:")
 
-herzhaft = st.selectbox("Salty or sweet?", herzhaft_options)
-if herzhaft == "Salty":
-    df = df[df["Salty"] == "Salty"]
+herzhaft = st.selectbox("salty or sweet?", herzhaft_options)
+if herzhaft == "salty":
+    df = df[df["salty"] == "salty"]
 elif herzhaft == "sweet":
-    df = df[df["Salty"] == "sweet"]
-
-effort = st.selectbox("How much effort?", effort_options)
-if effort != "All":
-    df = df[df["effort"] == int(effort)]
+    df = df[df["salty"] == "sweet"]
 
 takeaway = st.selectbox("Takeaway or cook at home?", takeaway_options)
 if takeaway != "All":
     df = df[df["takeaway"] == takeaway]
 
+effort = st.selectbox("How much effort?", effort_options)
+if effort != "All":
+    df = df[df["effort"] == int(effort)]
+    
 # Suggest food
 if st.button("Suggest food"):
     if len(df) > 0:
