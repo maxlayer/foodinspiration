@@ -2,28 +2,38 @@ import streamlit as st
 import pandas as pd
 import random
 
-# Load the food table from a CSV file
-food_table = pd.read_excel('food_table.xlsx')
+# Load data
+@st.cache
+def load_data(file_path):
+    return pd.read_excel(file_path)
 
-# Define the filter options
-takeaway_options = ['All', 'Takeaway', 'Cook at home']
-sweet_salty_options = ['All', 'Sweet', 'Salty']
+food_table = load_data('food_table.xlsx')
 
-# Create the filter widgets
-takeaway_filter = st.sidebar.selectbox('Takeaway or cook at home?', takeaway_options)
-sweet_salty_filter = st.sidebar.selectbox('Sweet or salty?', sweet_salty_options)
+# Filters
+herzhaft_filter = st.sidebar.radio("Salty or sweet?", ("Salty", "Sweet", "Any"))
+dauer_filter = st.sidebar.slider("Effort level (1-9)", 1, 9, (1, 9))
+liefern_filter = st.sidebar.checkbox("Only delivery/takeaway?")
 
-# Apply the filters to the food table
-if takeaway_filter != 'All':
-    food_table = food_table[food_table['liefern'] == takeaway_filter]
-if sweet_salty_filter != 'All':
-    food_table = food_table[food_table['herzhaft'] == sweet_salty_filter]
+# Apply filters
+filtered_food_table = food_table.copy()
+if herzhaft_filter != "Any":
+    filtered_food_table = filtered_food_table[filtered_food_table["herzhaft"] == herzhaft_filter.lower()]
+if dauer_filter != (1, 9):
+    filtered_food_table = filtered_food_table[filtered_food_table["dauer"].between(*dauer_filter)]
+if liefern_filter:
+    filtered_food_table = filtered_food_table[filtered_food_table["liefern"] == "ja"]
 
-# Shuffle the remaining food and select one
-if len(food_table) > 0:
-    shuffled_food = random.sample(list(food_table['essen']), len(food_table))
-    selected_food = shuffled_food[0]
-    st.write('Hey Carla, hier ist was leckres: ', selected_food, '?')
+# Shuffle
+if st.button("Reshuffle"):
+    current_food = random.choice(filtered_food_table["essen"])
 else:
-    st.write('Es gibt einfach nichts leckres.')
+    current_food = st.session_state.get("current_food")
+    if not current_food or current_food not in filtered_food_table["essen"].values:
+        current_food = random.choice(filtered_food_table["essen"])
+    st.session_state.current_food = current_food
+
+# Display
+st.write("# What's for food today?")
+st.write(f"## {current_food}")
+
 
