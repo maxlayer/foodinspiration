@@ -33,7 +33,7 @@ if takeaway != "All":
 if st.button("WAS LECKRES"):
     if len(df) > 0:
         current_food = random.choice(list(df["food"]))
-        st.write(f"Was Leckres: ## {current_food}")
+        st.write("# Was Leckres: {current_food}")
         st.write("---")
         st.button("Bäh! Ich will was leckres", key="new_suggestion")
     else:
