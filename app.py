@@ -2,28 +2,6 @@ import streamlit as st
 import pandas as pd
 import random
 
-from streamlit.components.v1 import html
-from customizer import customize_table
-
-# Define the Streamlit app pages
-PAGES = {
-    "Home": home_page,
-    "Customize Table": customize_table
-}
-
-# Define the function for the "Customize Table" page
-def customize_table():
-    html(customize_table())
-
-# Display the navigation menu
-st.sidebar.title("Navigation")
-selection = st.sidebar.radio("Go to", list(PAGES.keys()))
-
-# Display the selected page
-page = PAGES[selection]
-page()
-
-
 st.set_page_config(page_title="Carlas Food Inspiration", page_icon=":fork_and_knife:", layout="wide")
 
 # Load data from Excel file
