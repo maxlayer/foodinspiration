@@ -1,7 +1,3 @@
-!pip install openpyxl
-!pip install pandas
-!pip install streamlit
-
 import streamlit as st
 import pandas as pd
 import random
