@@ -82,15 +82,16 @@ if st.button("WAS LECKRES"):
         current_food = random.choice(list(df["food"]))
         st.write(f"# {current_food}")
         st.write("---")
-        st.button("Bäh! Ich will was leckres", key="new_suggestion")
-        del st.session_state["new_suggestion"]
-
+        st.button("Bäh! Ich will was leckres", key="new_suggestion_"+current_food)
     else:
         st.write("Leider gibt es nichts Leckeres.")
 
 # Generate new suggestion
-if "new_suggestion" in st.session_state:
-    current_food = random.choice(list(df["food"]))
-    st.write(f"# {current_food}")
-    st.write("---")
-    st.button("Bäh! Ich will was leckres", key="new_suggestion")
+for index, row in df.iterrows():
+    if "new_suggestion_"+row["food"] in st.session_state:
+        new_food = random.choice(list(df["food"]))
+        while new_food == row["food"]:
+            new_food = random.choice(list(df["food"]))
+        st.write(f"# {new_food}")
+        st.write("---")
+        st.button("Bäh! Ich will was leckres", key="new_suggestion_"+new_food)
