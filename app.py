@@ -18,9 +18,9 @@ st.write("Use the following filters to find your perfect food:")
 
 herzhaft = st.selectbox("Salty or sweet?", herzhaft_options)
 if herzhaft == "salty":
-    df = df[df["herzhaft"] == "salty"]
+    df = df[df["salty"] == "salty"]
 elif herzhaft == "sweet":
-    df = df[df["herzhaft"] == "sweet"]
+    df = df[df["salty"] == "sweet"]
 
 effort = st.selectbox("How much effort?", effort_options)
 if effort != "All":
@@ -34,7 +34,7 @@ if liefern != "All":
 if st.button("Suggest food"):
     if len(df) > 0:
         current_food = random.choice(list(df["food"]))
-        st.write(f"Try {current_food}!")
+        st.write(f"Das ist lecker: {current_food}!")
     else:
         st.write("No food found with these filters.")
 
