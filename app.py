@@ -27,7 +27,7 @@ if effort != "All":
     df = df[df["effort"] == int(effort)]
 
 takeaway = st.selectbox("Takeaway or cook at home?", takeaway_options)
-if liefern != "All":
+if takeaway != "All":
     df = df[df["takeaway"] == takeaway]
 
 # Suggest food
