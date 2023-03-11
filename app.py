@@ -77,8 +77,8 @@ if takeaway != "All":
 
 # Suggest food
 if st.button("WAS LECKRES"):
-    with st.spinner("Ich denke nach..."):
-        time.sleep(2)
+    with st.spinner("Hmm..."):
+        time.sleep(3)
         if len(df) > 0:
             current_food = random.choice(list(df["food"]))
             st.write(f"# {current_food}")
@@ -89,8 +89,8 @@ if st.button("WAS LECKRES"):
 
 # Generate new suggestion
 if "new_suggestion" in st.session_state:
-    with st.spinner("Ich denke nach..."):
-        time.sleep(2)
+    with st.spinner("Ja Ok, noch ein Versuch..."):
+        time.sleep(5)
         current_food = random.choice(list(df["food"]))
         st.write(f"# {current_food}")
         st.write("---")
