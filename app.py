@@ -31,9 +31,9 @@ if effort != "All":
     df = df[df["effort"] == int(effort)]
     
 # Suggest food
-if st.button("Suggest food"):
+if st.button("WAS LECKRES"):
     if len(df) > 0:
-        current_food = random.choice(list(df["food","effort"]))
+        current_food = random.choice(list(df["food"]))
         st.write(f"Was Leckres: {current_food}!")
     else:
         st.write("Es gibt leider nichts leckres.")
