@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import random
 
-st.set_page_config(page_title="Carla Food Inspiration", page_icon=":fork_and_knife:", layout="wide")
+st.set_page_config(page_title="Carlas Food Inspiration", page_icon=":fork_and_knife:", layout="wide")
 
 # Load data from Excel file
 df = pd.read_excel("food_table.xlsx")
