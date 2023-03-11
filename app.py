@@ -83,6 +83,8 @@ if st.button("WAS LECKRES"):
         st.write(f"# {current_food}")
         st.write("---")
         st.button("Bäh! Ich will was leckres", key="new_suggestion")
+        del st.session_state["new_suggestion"]
+
     else:
         st.write("Leider gibt es nichts Leckeres.")
 
