@@ -73,21 +73,43 @@ if takeaway != "All":
         if effort != "All":
             df = df[df["effort"] == effort]
 
+
 # Suggest food
 if st.button("WAS LECKRES"):
-    if len(df) > 0:
-        current_food = random.choice(list(df["food"]))
-        #st.write(f"# {current_food}")
-        st.write(f"<h1>{current_food}</h1>", unsafe_allow_html=True)
-        st.write("---")
-        st.button("Bäh! Ich will was leckres", key="new_suggestion")
-    else:
-        st.write("Leider gibt es nichts Leckeres.")
+    with st.spinner("Ich denke nach..."):
+        time.sleep(2)
+        if len(df) > 0:
+            current_food = random.choice(list(df["food"]))
+            st.write(f"# {current_food}")
+            st.write("---")
+            st.button("Bäh! Ich will was leckres", key="new_suggestion")
+        else:
+            st.write("Leider gibt es nichts Leckeres.")
 
 # Generate new suggestion
 if "new_suggestion" in st.session_state:
-    current_food = random.choice(list(df["food"]))
-    st.write(f"# {current_food}")
-    st.write("---")
-    st.button("Bäh! Ich will was leckres", key="new_suggestion")
+    with st.spinner("Ich denke nach..."):
+        time.sleep(2)
+        current_food = random.choice(list(df["food"]))
+        st.write(f"# {current_food}")
+        st.write("---")
+        st.button("Bäh! Ich will was leckres", key="new_suggestion")
+
+# Suggest food
+#if st.button("WAS LECKRES"):
+#    if len(df) > 0:
+#        current_food = random.choice(list(df["food"]))
+#        #st.write(f"# {current_food}")
+#        st.write(f"<h1>{current_food}</h1>", unsafe_allow_html=True)
+#        st.write("---")
+#        st.button("Bäh! Ich will was leckres", key="new_suggestion")
+#    else:
+#        st.write("Leider gibt es nichts Leckeres.")
+
+# Generate new suggestion
+#if "new_suggestion" in st.session_state:
+#    current_food = random.choice(list(df["food"]))
+#    st.write(f"# {current_food}")
+#    st.write("---")
+#    st.button("Bäh! Ich will was leckres", key="new_suggestion")
 
