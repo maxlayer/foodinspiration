@@ -10,6 +10,7 @@ df = pd.read_excel("food_table.xlsx")
 herzhaft_options = ["herzhaft", "süß"]
 takeaway_options = ["bestellen", "kochen"]
 effort_options = ["wenig", "mittel", "hoch"]
+cost_options = ["€", "€€", "€€€"]
 
 # Define CSS styles
 STYLE = """
@@ -59,7 +60,7 @@ st.markdown("<div id='logo'><img src='https://www.freeiconspng.com/uploads/resta
 st.write("# Carlas Food Inspiration!")
 st.markdown(JS, unsafe_allow_html=True)
 
-herzhaft = st.multiselect("herzhaft oder süß?", herzhaft_options, default=["herzhaft", "süß"])
+herzhaft = st.select("herzhaft oder süß?", herzhaft_options, default=["herzhaft", "süß"])
 if len(herzhaft) > 0:
     df = df[df["salty"].isin(herzhaft)]
 
@@ -71,6 +72,21 @@ if len(takeaway) > 0:
         effort = st.multiselect("Wie viel Aufwand?", effort_options, default=["wenig", "mittel", "hoch"])
         if len(effort) > 0:
             df = df[df["effort"].isin(effort)]
+            
+    elif "bestellen" in takeaway:
+        cost = st.select("Kosten", cost_options, key="cost_filter")
+        if cost != "Alle":
+            df = df[df["cost"] == cost]
+        else:
+            df = df[df["cost"].isin(cost_options[:-1])]
+
+            cost_range = st.slider("Kostenbereich", min_value=1, max_value=3, value=(1, 3))
+            df = df[(df["cost"].str.len() >= cost_range[0]) & (df["cost"].str.len() <= cost_range[1])]
+
+            if len(df) > 0:
+                cost_labels = ["€" * i for i in range(cost_range[0], cost_range[1] + 1)]
+                st.write("Kosten: ", " | ".join(cost_labels))
+
 
 # Suggest food
 if st.button("WAS LECKRES"):
