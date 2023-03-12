@@ -74,7 +74,7 @@ if len(takeaway) > 0:
             df = df[df["effort"].isin(effort)]
             
     elif "bestellen" in takeaway:
-        cost = st.select("Kosten", cost_options, key="cost_filter")
+        cost = st.select("cost", cost_options, key="cost_filter")
         if cost != "Alle":
             df = df[df["cost"] == cost]
         else:
