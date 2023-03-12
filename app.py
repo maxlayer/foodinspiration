@@ -60,7 +60,7 @@ st.markdown("<div id='logo'><img src='https://www.freeiconspng.com/uploads/resta
 st.write("# Carlas Food Inspiration!")
 st.markdown(JS, unsafe_allow_html=True)
 
-herzhaft = st.select("herzhaft oder süß?", herzhaft_options, default=["herzhaft", "süß"])
+herzhaft = st.multiselect("herzhaft oder süß?", herzhaft_options, default=["herzhaft", "süß"])
 if len(herzhaft) > 0:
     df = df[df["salty"].isin(herzhaft)]
 
