@@ -57,9 +57,7 @@ st.markdown("<div id='logo'><img src='https://www.freeiconspng.com/uploads/resta
 
 # Get user inputs for filters
 st.write("# Carlas Food Inspiration!")
-st.write("Hier muss man erst filtern:")
 st.markdown(JS, unsafe_allow_html=True)
-
 
 herzhaft = st.multiselect("herzhaft oder süß?", herzhaft_options, default=["herzhaft", "süß"])
 if len(herzhaft) > 0:
