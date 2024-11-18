@@ -3,14 +3,18 @@ import pandas as pd
 import random
 import time
 
-# Load data from Excel file
-df = pd.read_excel("food_table.xlsx")
-
-# Define filters
-herzhaft_options = ["herzhaft", "süß"]
-takeaway_options = ["bestellen", "kochen"]
-effort_options = ["wenig", "mittel", "hoch"]
-cost_options = ["€", "€€", "€€€"]
+# Load data from Excel file  
+try:  
+    df = pd.read_excel("food_table.xlsx")  
+except Exception as e:  
+    st.error(f"Fehler beim Laden der Excel-Datei: {e}")  
+    df = pd.DataFrame(columns=["food", "salty", "takeaway", "effort", "cost"])  
+  
+# Define filters and options  
+herzhaft_options = ["herzhaft", "süß"]  
+takeaway_options = ["bestellen", "kochen"]  
+effort_options = ["wenig", "mittel", "hoch"]  
+cost_options = ["€", "€€", "€€€"]  
 
 # Define CSS styles
 STYLE = """
@@ -52,9 +56,48 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 """
+
+# Page configuration
 st.set_page_config(page_title="Carlas Food Inspiration", page_icon=":fork_and_knife:", layout="wide")
 st.markdown("<div id='logo'><img src='https://www.freeiconspng.com/uploads/restaurant-icon-png-21.png' width='50'></div>", unsafe_allow_html=True)
 
+# Seitenleiste für das Durchsuchen der Menüs  
+with st.sidebar:  
+    st.write("## Alle leckeren Sachen")  
+    # Suchfeld  
+    search_query = st.text_input("Suche nach Mahlzeiten")  
+    if search_query:  
+        search_results = df[df['food'].str.contains(search_query, case=False, na=False)]  
+        for _, row in search_results.iterrows():  
+            st.write(f"- {row['food']}")  
+  
+    # Button und Formular zum Hinzufügen einer neuen Mahlzeit  
+    if st.button("Neue Mahlzeit hinzufügen"):  
+        with st.form("new_meal_form", clear_on_submit=True):  
+            st.write("### Füge eine neue Mahlzeit hinzu")  
+            new_food = st.text_input("Name der Mahlzeit")  
+            new_salty = st.selectbox("Herzhaft oder süß?", herzhaft_options)  
+            new_takeaway = st.selectbox("Kochen oder Bestellen?", takeaway_options)  
+            new_effort = st.selectbox("Wie viel Aufwand?", effort_options)  
+            new_cost = st.selectbox("Kosten?", cost_options)  
+  
+            submit_button = st.form_submit_button("Mahlzeit speichern")  
+            if submit_button:  
+                # Add the new meal to the DataFrame  
+                new_data = {  
+                    "food": new_food,  
+                    "salty": new_salty,  
+                    "takeaway": new_takeaway,  
+                    "effort": new_effort,  
+                    "cost": new_cost  
+                }  
+                df = df.append(new_data, ignore_index=True)  
+                # Save the updated DataFrame back to the Excel file  
+                try:  
+                    df.to_excel("food_table.xlsx", index=False)  
+                    st.success("Mahlzeit erfolgreich hinzugefügt!")  
+                except Exception as e:  
+                    st.error(f"Fehler beim Speichern der neuen Mahlzeit: {e}")  
 
 # Get user inputs for filters
 st.write("# Carlas Food Inspiration!")
@@ -72,7 +115,6 @@ if len(takeaway) > 0:
         effort = st.multiselect("Wie viel Aufwand?", effort_options, default=["wenig", "mittel", "hoch"])
         if len(effort) > 0:
             df = df[df["effort"].isin(effort)]
-
 
 # Suggest food
 if st.button("WAS LECKRES"):
