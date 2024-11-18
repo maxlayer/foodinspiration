@@ -61,44 +61,52 @@ document.addEventListener('DOMContentLoaded', function() {
 st.set_page_config(page_title="Carlas Food Inspiration", page_icon=":fork_and_knife:", layout="wide")
 st.markdown("<div id='logo'><img src='https://www.freeiconspng.com/uploads/restaurant-icon-png-21.png' width='50'></div>", unsafe_allow_html=True)
 
-# Seitenleiste für das Durchsuchen der Menüs  
+# Seitenleiste für das Durchsuchen der Menüs und Hinzufügen neuer Mahlzeiten  
 with st.sidebar:  
     st.write("## Alle leckeren Sachen")  
     # Suchfeld  
     search_query = st.text_input("Suche nach Mahlzeiten")  
     if search_query:  
         search_results = df[df['food'].str.contains(search_query, case=False, na=False)]  
+        st.write("Suchergebnisse:")  
         for _, row in search_results.iterrows():  
             st.write(f"- {row['food']}")  
   
-    # Button und Formular zum Hinzufügen einer neuen Mahlzeit  
+    # Button zum Hinzufügen einer neuen Mahlzeit  
     if st.button("Neue Mahlzeit hinzufügen"):  
-        with st.form("new_meal_form", clear_on_submit=True):  
-            st.write("### Füge eine neue Mahlzeit hinzu")  
-            new_food = st.text_input("Name der Mahlzeit")  
-            new_salty = st.selectbox("Herzhaft oder süß?", herzhaft_options)  
-            new_takeaway = st.selectbox("Kochen oder Bestellen?", takeaway_options)  
-            new_effort = st.selectbox("Wie viel Aufwand?", effort_options)  
-            new_cost = st.selectbox("Kosten?", cost_options)  
+        # Sie können auch st.session_state verwenden, um den Zustand des Formulars zu verwalten  
+        st.session_state.show_form = True  
   
-            submit_button = st.form_submit_button("Mahlzeit speichern")  
-            if submit_button:  
-                # Add the new meal to the DataFrame  
-                new_data = {  
-                    "food": new_food,  
-                    "salty": new_salty,  
-                    "takeaway": new_takeaway,  
-                    "effort": new_effort,  
-                    "cost": new_cost  
-                }  
-                df = df.append(new_data, ignore_index=True)  
-                # Save the updated DataFrame back to the Excel file  
-                try:  
-                    df.to_excel("food_table.xlsx", index=False)  
-                    st.success("Mahlzeit erfolgreich hinzugefügt!")  
-                except Exception as e:  
-                    st.error(f"Fehler beim Speichern der neuen Mahlzeit: {e}")  
-
+# Prüfen, ob das Formular angezeigt werden soll  
+if st.session_state.get('show_form', False):  
+    with st.form("new_meal_form", clear_on_submit=True):  
+        st.write("### Füge eine neue Mahlzeit hinzu")  
+        new_food = st.text_input("Name der Mahlzeit")  
+        new_salty = st.selectbox("Herzhaft oder süß?", herzhaft_options)  
+        new_takeaway = st.selectbox("Kochen oder Bestellen?", takeaway_options)  
+        new_effort = st.selectbox("Wie viel Aufwand?", effort_options)  
+        new_cost = st.selectbox("Kosten?", cost_options)  
+  
+        submit_button = st.form_submit_button("Mahlzeit speichern")  
+        if submit_button:  
+            # Daten zur DataFrame hinzufügen  
+            new_data = {  
+                "food": new_food,  
+                "salty": new_salty,  
+                "takeaway": new_takeaway,  
+                "effort": new_effort,  
+                "cost": new_cost  
+            }  
+            df = df.append(new_data, ignore_index=True)  
+            # Die aktualisierte DataFrame in einer Excel-Datei speichern  
+            try:  
+                df.to_excel("food_table.xlsx", index=False)  
+                st.success("Mahlzeit erfolgreich hinzugefügt!")  
+                # Formular ausblenden nach dem Hinzufügen  
+                st.session_state.show_form = False  
+            except Exception as e:  
+                st.error(f"Fehler beim Speichern der neuen Mahlzeit: {e}")  
+                
 # Get user inputs for filters
 st.write("# Carlas Food Inspiration!")
 st.markdown(JS, unsafe_allow_html=True)
